@@ -1,5 +1,6 @@
 package com.kaiz.product.controller;
 
+import com.kaiz.product.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +25,13 @@ public class ProductController {
 	@Qualifier(value = "restTemplate")
 	private RestTemplate restTemplate;
 
+	@Autowired
+	private UserService userService;
+
 	@GetMapping("/products")
 	public String getProducts(@RequestParam String product, @RequestParam String name) {
-		String userResult = this.restTemplate.getForEntity("http://userservice:8081/hello?name=" + name,String.class, "").getBody();
+//		String userResult = this.restTemplate.getForEntity("http://userservice:8081/hello?name=" + name,String.class, "").getBody();
+		String userResult = userService.hello(name);
 		return "product: " + product + ",user service info :" + userResult;
 	}
 }
